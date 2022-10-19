@@ -1,21 +1,29 @@
 package com.udacity.jdnd.course3.critter.pet;
 
-import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.user.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import javax.persistence.*;
 import java.time.LocalDate;
-
-/**
- * Represents the form that pet request and response data takes. Does not map
- * to the database directly.
- */
-public class PetDTO {
+@NamedQueries({
+        @NamedQuery(
+                name = "pet.getAll",
+                query = "select p from Pet p"),
+        @NamedQuery(
+                name = "pet.getByOwner",
+                query = "select p from Pet p where p.owner.id = :id")
+}
+)
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Pet {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private PetType type;
     private String name;
-    private long ownerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private Customer owner;
     private LocalDate birthDate;
     private String notes;
 
@@ -35,13 +43,14 @@ public class PetDTO {
         this.name = name;
     }
 
-    public long getOwnerId() {
-        return ownerId;
+    public Customer getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(Customer ownerId) {
+        this.owner = ownerId;
     }
+
     public LocalDate getBirthDate() {
         return birthDate;
     }
@@ -64,5 +73,9 @@ public class PetDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.setOwner(customer);
     }
 }

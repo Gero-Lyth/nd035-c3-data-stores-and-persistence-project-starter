@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -83,6 +84,10 @@ public class CritterFunctionalTest {
 
         //check to make sure customer now also contains pet
         CustomerDTO retrievedCustomer = userController.getAllCustomers().get(0);
+        Assertions.assertEquals(newCustomer.getName(), customerDTO.getName());
+        Assertions.assertEquals(newCustomer.getId(), retrievedCustomer.getId());
+
+        Assertions.assertNotNull(retrievedCustomer.getPetIds());
         Assertions.assertTrue(retrievedCustomer.getPetIds() != null && retrievedCustomer.getPetIds().size() > 0);
         Assertions.assertEquals(retrievedCustomer.getPetIds().get(0), retrievedPet.getId());
     }
@@ -91,7 +96,6 @@ public class CritterFunctionalTest {
     public void testFindPetsByOwner() {
         CustomerDTO customerDTO = createCustomerDTO();
         CustomerDTO newCustomer = userController.saveCustomer(customerDTO);
-
         PetDTO petDTO = createPetDTO();
         petDTO.setOwnerId(newCustomer.getId());
         PetDTO newPet = petController.savePet(petDTO);
@@ -249,8 +253,9 @@ public class CritterFunctionalTest {
     }
     private static CustomerDTO createCustomerDTO() {
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setName("TestEmployee");
+        customerDTO.setName("TestCustomer");
         customerDTO.setPhoneNumber("123-456-789");
+        customerDTO.setPetIds(new ArrayList<>());
         return customerDTO;
     }
 
