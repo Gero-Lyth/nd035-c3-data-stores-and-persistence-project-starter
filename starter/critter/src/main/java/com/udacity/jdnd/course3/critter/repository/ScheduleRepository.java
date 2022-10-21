@@ -34,8 +34,25 @@ public class ScheduleRepository {
         entityManager.remove(schedule);
     };
     public List<Schedule> getAll(){
-        TypedQuery<Schedule> query = entityManager.createNamedQuery("pet.getAll", Schedule.class);
+        TypedQuery<Schedule> query = entityManager.createNamedQuery("schedule.getAll", Schedule.class);
         return query.getResultList();
 
+    }
+    public List<Schedule> getByEmployeeId(long id){
+        TypedQuery<Schedule> query = entityManager.createNamedQuery("schedule.getByEmployee", Schedule.class);
+        query.setParameter("id",id);
+        return query.getResultList();
+    }
+
+    public List<Schedule> getByPetId(long petId) {
+        TypedQuery<Schedule> query = entityManager.createNamedQuery("schedule.getByPet", Schedule.class);
+        query.setParameter("id",petId);
+        return query.getResultList();
+    }
+
+    public List<Schedule> getByCustomerId(long customerId) {
+        TypedQuery<Schedule> query = entityManager.createNamedQuery("schedule.getByCustomer", Schedule.class);
+        query.setParameter("id",customerId);
+        return query.getResultList();
     }
 }

@@ -21,17 +21,17 @@ public class EmployeeService {
         return employeeRepository.find(employeeId);
     }
 
-    public EmployeeDTO save(EmployeeDTO employeeDTO) {
+    public Employee save(EmployeeDTO employeeDTO) {
         Employee employee = modelMapper.map(employeeDTO,Employee.class);
         return this.save(employee);
     }
-    public EmployeeDTO save(Employee employee) {
+    public Employee save(Employee employee) {
         employee = employeeRepository.merge(employee);
         employeeRepository.persist(employee);
-        return modelMapper.map(employee,EmployeeDTO.class);
+        return employee;
     }
 
-    public List<EmployeeDTO> findByThings(EmployeeRequestDTO employeeDTO) {
+    public List<Employee> findByThings(EmployeeRequestDTO employeeDTO) {
         return employeeRepository.bySkillAndDayAvailable(employeeDTO.getSkills(),employeeDTO.getDate().getDayOfWeek());
     }
 

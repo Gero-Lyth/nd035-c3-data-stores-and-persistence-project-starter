@@ -70,7 +70,7 @@ public class Customer {
         this.pets = pets;
     }
 
-    public void addPets(Pet pet){
+    public void addPet(Pet pet){
         pets.add(pet);
     }
 

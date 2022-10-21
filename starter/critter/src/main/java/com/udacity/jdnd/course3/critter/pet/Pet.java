@@ -17,7 +17,8 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Pet {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pet_id", nullable = false)
     private long id;
     private PetType type;
     private String name;
@@ -77,5 +78,10 @@ public class Pet {
 
     public void setCustomer(Customer customer) {
         this.setOwner(customer);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.id);
     }
 }

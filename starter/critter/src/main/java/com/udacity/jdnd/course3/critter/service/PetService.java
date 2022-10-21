@@ -1,20 +1,13 @@
 package com.udacity.jdnd.course3.critter.service;
 
 import com.udacity.jdnd.course3.critter.pet.Pet;
-import com.udacity.jdnd.course3.critter.pet.PetDTO;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.PetRepository;
 import com.udacity.jdnd.course3.critter.user.Customer;
-import com.udacity.jdnd.course3.critter.user.UserController;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PetService {
@@ -30,7 +23,7 @@ public class PetService {
             Customer customer = customerOptional.get();
             pet.setCustomer(customer);
             pet = petRepository.merge(pet);
-            customer.addPets(pet);
+            customer.addPet(pet);
             return pet;
         }
         throw new UnsupportedOperationException("Customer not available to save pet");

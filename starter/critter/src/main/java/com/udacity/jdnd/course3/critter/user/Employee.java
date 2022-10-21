@@ -24,17 +24,18 @@ import java.util.Set;
 @Entity
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id", nullable = false)
     private long id;
     @Nationalized
     private String name;
     @ElementCollection(targetClass = EmployeeSkill.class)
-    @JoinTable(name = "employee_skills", joinColumns = @JoinColumn(name = "id"))
+    @JoinTable(name = "employee_skills", joinColumns = @JoinColumn(name = "employee_id"))
     @Column(name = "skill", nullable = false)
     @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> skills;
     @ElementCollection(targetClass = DayOfWeek.class)
-    @JoinTable(name = "employee_days", joinColumns = @JoinColumn(name = "id"))
+    @JoinTable(name = "employee_days", joinColumns = @JoinColumn(name = "employee_id"))
     @Column(name = "days", nullable = false)
     @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> daysAvailable;
@@ -76,5 +77,10 @@ public class Employee {
         if(obj.getClass() == Employee.class)
             return this.id == ((Employee) obj).id;
         return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
     }
 }

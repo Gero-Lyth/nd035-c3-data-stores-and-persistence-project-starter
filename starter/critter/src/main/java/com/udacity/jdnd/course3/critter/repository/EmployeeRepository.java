@@ -54,22 +54,14 @@ public class EmployeeRepository {
         query.setParameter("day",day);
         return query.getResultList();
     }
-    public List<EmployeeDTO> bySkillAndDayAvailable(Set<EmployeeSkill> skill, DayOfWeek day){
+    public List<Employee> bySkillAndDayAvailable(Set<EmployeeSkill> skill, DayOfWeek day){
         TypedQuery<Employee> query = entityManager.createNamedQuery("employee.byDayAvailable", Employee.class);
         query.setParameter("day",day);
         TypedQuery<Employee> query2 = entityManager.createNamedQuery("employee.bySkill", Employee.class);
         query2.setParameter("skills",skill);
         List<Employee> quiry = query2.getResultList();
         quiry.removeIf(item -> !(query.getResultList().contains(item) && item.getSkills().containsAll(skill)));
-        return quiry.stream().map(item -> modelMapper.map(item,EmployeeDTO.class)).collect(Collectors.toList());
+        return quiry;
     }
-    public List<EmployeeDTO> bySkillAndDayAvailable(EmployeeRequestDTO requestDTO){
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
-        Root<Employee> root = query.from(Employee.class);
-        System.out.println(root.get("daysAvailable"));
-        query.select(root)
-                .where(cb.in(root.get("daysAvailable")).value(requestDTO.getDate().getDayOfWeek()));
-        return entityManager.createQuery(query).getResultList().stream().map(item -> modelMapper.map(item,EmployeeDTO.class)).collect(Collectors.toList());
-    }
+
 }

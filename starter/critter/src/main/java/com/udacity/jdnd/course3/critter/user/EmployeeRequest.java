@@ -8,9 +8,10 @@ import java.util.Set;
 public class EmployeeRequest {
     @Id
     @GeneratedValue
+    @Column(name = "request_id", nullable = false)
     private Long id;
     @ElementCollection(targetClass = EmployeeSkill.class)
-    @JoinTable(name = "request_skills", joinColumns = @JoinColumn(name = "id"))
+    @JoinTable(name = "request_skills", joinColumns = @JoinColumn(name = "request_id"))
     @Column(name = "skill", nullable = false)
     @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> skills;
